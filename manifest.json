@@ -1,0 +1,10 @@
+{
+  "domain": "evolga_io",
+  "name": "Evolga I/O",
+  "codeowners": ["promtehnolog"],
+  "documentation": "none",
+  "config_flow": true, 
+  "iot_class": "local_polling",
+  "issue_tracker": "none",
+  "version": "2024.7.1"
+}
