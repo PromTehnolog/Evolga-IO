@@ -21,10 +21,11 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     sensors = [
-            DINSensor(1, 123), 
-            DINSensor(2, 120),
-            DINSensor(3, 127),
-            DINSensor(4, 124) ]
+            DINSensor(1, 123, "DIN 1"), 
+            DINSensor(2, 120, "DIN 2"),
+            DINSensor(3, 127, "DIN 3"),
+            DINSensor(4, 124, "DIN 4"),
+            DINSensor(5, 147, "FN") ]
     async_add_entities(sensors, True)
 
 
@@ -32,12 +33,12 @@ class DINSensor(SensorEntity):
     """A simple sensor."""
     _attr_has_entity_name = True
 
-    def __init__(self, num, port) -> None:
+    def __init__(self, num, port, name) -> None:
         """Initialize the sensor."""
-        self._attr_name = f'DIN {num}'
+        self._attr_name = name
         self.num = num
         self.port = port
-        self._attr_unique_id = f'evolga_DIN_{num}'
+        self._attr_unique_id = f'evolga_in_{num}'
         self._scan_interval = 10
         self._attr_should_poll = True
 

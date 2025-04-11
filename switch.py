@@ -15,7 +15,8 @@ async def async_setup_entry(
     switches = [
             RelaySwitch(1, 121),
             RelaySwitch(2, 122),
-            RelaySwitch(3, 125) ]
+            RelaySwitch(3, 125),
+            LED("status_led", 0) ]
     async_add_entities(switches, True)
 
 
@@ -43,4 +44,30 @@ class RelaySwitch(SwitchEntity):
     def turn_off(self):
         self._is_on = 0
         os.system(f'echo 0 > /sys/class/gpio/gpio{self.port}/value')
+
+
+class LED(SwitchEntity):
+    _attr_has_entity_name = True 
+
+    def __init__(self, name, port) -> None:
+        self._is_on = False 
+        self._attr_name = name
+        self.port = port 
+        self._attr_unique_id = f'evolga_led_{name}'
+
+    async def async_added_to_hass(self):
+        os.system(f'echo none > /sys/class/leds/{self._attr_name}/trigger')
+
+    @property 
+    def is_on(self):
+        return self._is_on
+
+    def turn_on(self):
+        os.system(f'echo 1 > /sys/class/leds/{self._attr_name}/brightness')
+        self._is_on = True
+
+    def turn_off(self):
+        os.system(f'echo 0 > /sys/class/leds/{self._attr_name}/brightness')
+        self._is_on = False
+
 
